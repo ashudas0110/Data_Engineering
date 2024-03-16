@@ -87,29 +87,29 @@ flowchart TD
 * ***read_data Function***
   - Initializes reading of a CSV file into a DataFrame with headers and inferred schema. This is the first step in data processing, allowing further manipulation and analysis.
 
-```python
-def read_data (spark,input_file):
-    '''
-    spark_session : spark
-    for input_file : input_file
-    '''
-    # Reading the input file.
-    df = spark.read.csv(input_file, header=True, inferSchema=True)
-    return df
-```
+  ```python
+  def read_data (spark,input_file):
+      '''
+      spark_session : spark
+      for input_file : input_file
+      '''
+      # Reading the input file.
+      df = spark.read.csv(input_file, header=True, inferSchema=True)
+      return df
+  ```
 * ***load_data Function***
    - Checks if the DataFrame is not empty and writes it to a specified path as a CSV file. It uses coalesce(1) to ensure the output is a single CSV file, which is     useful for small datasets or when a consolidated file is required.
 
-```python
-def load_data(data,outputpath):
-    # Code to store the outputs to the respective locations      
-    # The Output files are in a single partition CSV file with header.  
-    if (data.count() != 0):
-        print("Loading the data",outputpath)
-        data.coalesce(1).write.csv(outputpath, mode="overwrite", header=True)
-    else:
-        print("Empty dataframe, hence cannot save the data",outputpath)
-```
+  ```python
+  def load_data(data,outputpath):
+      # Code to store the outputs to the respective locations      
+      # The Output files are in a single partition CSV file with header.  
+      if (data.count() != 0):
+          print("Loading the data",outputpath)
+          data.coalesce(1).write.csv(outputpath, mode="overwrite", header=True)
+      else:
+          print("Empty dataframe, hence cannot save the data",outputpath)
+  ```
     
 * ***result_1 Function***
   -Filters the input DataFrame for records where the employee resides in the US or Canada, then calculates the average salary by job title, rounds it to the         nearest whole number, and sorts by job title.
@@ -145,7 +145,8 @@ def load_data(data,outputpath):
     print("Starting result_2")
     print("-------------------------")
     # The following are the parameters : -                                                                                       
-    #      ◦ input_file : input_df                                                                                                                                     #  1) Using input_df, a new field named Enterprise_size is created.                        
+    #      ◦ input_file : input_df
+    #  1) Using input_df, a new field named Enterprise_size is created.                        
     #    i) If the company size is L,                                                    
     #       the flag under Enterprise_size column is "Large_enterprise"        
     #    ii) If the company size is M,                                                   
