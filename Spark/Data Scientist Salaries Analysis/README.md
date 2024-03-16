@@ -53,8 +53,7 @@ flowchart TD
     F --> |Write Data| I[Data Output - result_3]
     G --> J(End)
     H --> J(End)
-    I --> J(End)
-  
+    I --> J(End)  
 ```
 ## High-Level Architecture
 1. **Data Ingestion** : Read the ds_salaries.csv file using Spark's DataFrame API.
@@ -259,6 +258,37 @@ flowchart TD
         print("The directory does not exist. Creating..% s", path)
         os.mkdir(path)
   ```
+
+```mermaid
+graph TD
+    A(Start) --> B[Read Data from CSV]
+
+    B --> C{DataFrame Empty?}
+    C -->|Yes| D[End]
+    C -->|No| E[Task 1: Average Salary Analysis]
+    
+    E --> F[Task 2: Company Size Categorization]
+    F --> G[Task 3: Salary Trend Analysis]
+    
+    G --> H{DataFrames Ready?}
+    H -->|No| D
+    H -->|Yes| I[Write Data to CSV]
+    
+    I --> J[End]
+
+    E -->|Filter by US, CA| E1[Group by Job Title]
+    E1 -->|Avg & Round Salary| E2[Output DataFrame]
+
+    F -->|Add Enterprise_size Column| F1[Select Required Columns]
+    F1 -->|Output DataFrame| F2
+
+    G -->|Filter by Location & Salary > 50K| G1[Count by Job Title]
+    G1 -->|Output DataFrame| G2
+
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style J fill:#f9f,stroke:#333,stroke-width:4px
+    style D fill:#fbb,stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5
+```
 
 ## CRC Files Explanation in the output folder
 When Spark writes data to a file system, it also creates CRC (Cyclic Redundancy Check) files alongside the actual data files. These CRC files, such as ._SUCCESS.crc and .part-00000-...csv.crc, are checksum files used to detect errors in the written data files. They help in ensuring data integrity by allowing Spark (or the underlying file system) to verify that the data has not been corrupted during the write process.
