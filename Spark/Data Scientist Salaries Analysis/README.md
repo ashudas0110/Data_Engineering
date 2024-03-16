@@ -4,16 +4,17 @@
 
 This repository contains the solution to a data engineering project focused on analyzing data scientist salaries using Apache Spark. The challenge involves reading, processing, and analyzing salary data to extract meaningful insights through various data transformations and aggregations.
 
-Problem Statement
+## Problem Statement
 The challenge is based on a dataset containing salary information for data scientists across different countries, experience levels, and company sizes. The primary objectives are:
 
-Average Salary Calculation: Calculate the average salary for each job title for employees residing in the US and Canada, ensuring the output does not contain decimal points.
-Enterprise Size Categorization: Based on the company size, categorize each record into Large_enterprise, Medium_enterprise, Small_enterprise, or others.
-High Salary Job Count: Identify jobs where the employee's residence matches the company location and the salary is greater than $50,000, then count the occurrences of each job title.
-Tools and Technologies
-Apache Spark: Used for data processing and analysis.
-PySpark: The Python API for Spark, utilized for writing Spark jobs in Python.
-Visual Studio Code (VSCode): Recommended as the Integrated Development Environment (IDE) for writing and testing the Spark code.
+1. **Average Salary Calculation**: Calculate the average salary for each job title for employees residing in the US and Canada, ensuring the output does not contain decimal points.
+2. **Enterprise Size Categorization**: Based on the company size, categorize each record into Large_enterprise, Medium_enterprise, Small_enterprise, or others.
+3. **High Salary Job Count**: Identify jobs where the employee's residence matches the company location and the salary is greater than $50,000, then count the occurrences of each job title.
+
+## Tools and Technologies
+* Apache Spark: Used for data processing and analysis.
+* PySpark: The Python API for Spark, utilized for writing Spark jobs in Python.
+* Visual Studio Code (VSCode): Recommended as the Integrated Development Environment (IDE) for writing and testing the Spark code.
 Solution Approach
 Reading Data
 The data is read from a CSV file using PySpark's DataFrame API, which allows for efficient handling of structured data.
