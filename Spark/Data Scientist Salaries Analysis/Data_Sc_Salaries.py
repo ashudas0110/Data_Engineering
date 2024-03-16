@@ -13,11 +13,14 @@ def read_data (spark,input_file):
     spark_session : spark
     for input_file : input_file
     '''
+    #  Reading the input file.
     df = spark.read.csv(input_file, header=True, inferSchema=True)
 
     return df
 
-def load_data(data,outputpath):                 
+def load_data(data,outputpath):
+     # Stores the outputs to the respective locations.      
+     # The Output files are a single partition CSV file with header.  
      if (data.count() != 0):
         print("Loading the data",outputpath)
         data.coalesce(1).write.csv(outputpath, mode="overwrite", header=True)
@@ -30,7 +33,9 @@ def result_1(input_df):
     print("-------------------")
     print("Starting result_1")
     print("-------------------")
-                                                                      
+    #  From the input_df, a new field avg_salary is created and the average salaries 
+    #  given to each job for the employee residence having US and CA are calculated. 
+    #  Columns fetched are: job_title, avg_salary 
     df = input_df.filter(input_df.employee_residence.isin(['US', 'CA'])) \
                  .groupBy('job_title') \
                  .agg(round(avg('salary_in_usd')).alias('avg_salary')) \
@@ -46,19 +51,18 @@ def result_2(input_df):
     print("Starting result_2")
     print("-------------------------")
 
-# The following are the parameters : -                                                                                      
-#      ◦ input_file : input_df                                                                                                                                                                                                                         |
-#  1) Using input_df, a new field named Enterprise_size is creared.                     
-#    i) If the company size is L,                                                    
-#       the flag under Enterprise_size column should be as "Large_enterprise"        
-#    ii) If the company size is M,                                                   
-#       the flag under Enterprise_size column should be as "Medium_enterprise"       
-#   iii) If the company size is S,                                                   
-#       the flag under Enterprise_size column should be as "Small_enterprise"        
-#    iv) If all the above conditions are not true, flag should be "others"           
-# 2) Columns to be fetched : experience_level,employment_type,job_title,salary,      
-#                            company_location,company_size                                                                                                     |
-                                                                                         
+    # The following are the parameters : -                                                                                       
+    #      ◦ input_file : input_df                                                                                                                                                                                                                       |
+    #  1) Using input_df, a new field named Enterprise_size is created.                        
+    #    i) If the company size is L,                                                    
+    #       the flag under Enterprise_size column is "Large_enterprise"        
+    #    ii) If the company size is M,                                                   
+    #       the flag under Enterprise_size column is "Medium_enterprise"       
+    #   iii) If the company size is S,                                                   
+    #       the flag under Enterprise_size column is "Small_enterprise"        
+    #    iv) If all the above conditions are not true, flag is "others"           
+    # 2) Columns fetched are: experience_level,employment_type,job_title,salary,      
+    #                            company_location,company_size                             
 
     mapping_expr = expr(
         """CASE WHEN company_size = 'L' THEN 'Large_enterprise'
@@ -78,14 +82,11 @@ def result_3(input_df):
     print("Starting result_3")
     print("-------------------------")
 	
-# 1) Using input df, fetch the records where employee residence is matching with    
-#    the company location with the condition where salary is greater than 50000.     
-# 2) Find the count for each job_title.                                              
-# 3) Columns to be fetched: job_title,count                                                                                                                        |
+    # 1) Using input df, fetched the records where employee residence is matching with    
+    #    the company location with the condition where salary is greater than 50000.     
+    # 2) The count for each job_title is calculated                                           
+    # 3) Columns fetched are: job_title,count                                                                                                                       |
 
-
-    # Fetch records where employee residence matches the company location and salary is greater than 50000
-    # Then, find the count for each job_title.
     df = input_df.filter((input_df.employee_residence == input_df.company_location) & (input_df.salary_in_usd > 50000)) \
                  .groupBy('job_title') \
                  .count() \
@@ -140,7 +141,6 @@ def main():
 def outputfile_cleanup():
     """ Clean up the output files for a fresh execution.
         This is executed every time a job is run. 
-        Please DO NOT change anything here.
     """
     cwd = os.getcwd()
     dirname = os.path.dirname(cwd)
