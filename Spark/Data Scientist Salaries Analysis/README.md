@@ -1,5 +1,7 @@
-##Data Scientist Salaries Analysis
-Overview
+#Data Scientist Salaries Analysis
+
+##Overview
+
 This repository contains the solution to a data engineering challenge focused on analyzing data scientist salaries using Apache Spark. The challenge involves reading, processing, and analyzing salary data to extract meaningful insights through various data transformations and aggregations.
 
 Apache Spark is an open-source, distributed computing system that provides an interface for programming entire clusters with implicit data parallelism and fault tolerance. It's widely used for big data processing and analytics.
