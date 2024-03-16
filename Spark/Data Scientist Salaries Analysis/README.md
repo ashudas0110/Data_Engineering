@@ -43,17 +43,17 @@ spark-submit Data_Sc_Salaries.py
 ## Solution Overview
 ```mermaid
 flowchart TD
-    A(Start - Spark Session Initialization) -->|Read Data| B[Data Ingestion]
+    A([Start]) -->|Spark Session Initialization| B[Data Ingestion Read Data]
     B --> C[Data Processing]
     C -->|Task 1| D[Average Salary Analysis]
     C -->|Task 2| E[Enterprise Size Categorization]
     C -->|Task 3| F[Salary Trend Analysis]
-    D --> |Write Data| G[Data Output - result_1]
-    E --> |Write Data| H[Data Output - result_2]
-    F --> |Write Data| I[Data Output - result_3]
-    G --> J(End)
-    H --> J(End)
-    I --> J(End)  
+    D --> |Write result_1 to CSV| G[Data Output - result_1]
+    E --> |Write result_2 to CSV| H[Data Output - result_2]
+    F --> |Write result_3 to CSV| I[Data Output - result_3]
+    G --> J([End])
+    H --> J([End])
+    I --> J([End]) 
 ```
 ## High-Level Architecture
 1. **Data Ingestion** : Read the ds_salaries.csv file using Spark's DataFrame API.
@@ -259,35 +259,40 @@ flowchart TD
         os.mkdir(path)
   ```
 
+
 ```mermaid
 graph TD
-    A(Start) --> B[Read Data from CSV]
-
-    B --> C{DataFrame Empty?}
+    A(Start) --> B[Read Data]
+    B --> C{Data Empty?}
     C -->|Yes| D[End]
     C -->|No| E[Task 1: Average Salary Analysis]
-    
     E --> F[Task 2: Company Size Categorization]
     F --> G[Task 3: Salary Trend Analysis]
-    
-    G --> H{DataFrames Ready?}
-    H -->|No| D
-    H -->|Yes| I[Write Data to CSV]
-    
-    I --> J[End]
+    G --> H{Data Processed Correctly?}
+    H -->|No| I[Log Error and End]
+    H -->|Yes| J[Write Data to CSV]
+    J --> K[End]
 
-    E -->|Filter by US, CA| E1[Group by Job Title]
-    E1 -->|Avg & Round Salary| E2[Output DataFrame]
+    subgraph Task 1: Average Salary Analysis
+    E --> E1[Filter by Employee Residence US, CA]
+    E1 --> E2[Group by Job Title]
+    E2 --> E3[Calculate and Round Average Salary]
+    E3 --> E4[Return DataFrame]
+    end
 
-    F -->|Add Enterprise_size Column| F1[Select Required Columns]
-    F1 -->|Output DataFrame| F2
+    subgraph Task 2: Company Size Categorization
+    F --> F1[Add Enterprise_size Column]
+    F1 --> F2[Map Company Size to Categories]
+    F2 --> F3[Select Required Columns]
+    F3 --> F4[Return DataFrame]
+    end
 
-    G -->|Filter by Location & Salary > 50K| G1[Count by Job Title]
-    G1 -->|Output DataFrame| G2
-
-    style A fill:#f9f,stroke:#333,stroke-width:4px
-    style J fill:#f9f,stroke:#333,stroke-width:4px
-    style D fill:#fbb,stroke:#f66,stroke-width:2px,stroke-dasharray: 5, 5
+    subgraph Task 3: Salary Trend Analysis
+    G --> G1[Filter by Employee Residence and Salary > 50,000]
+    G1 --> G2[Group by Job Title and Count]
+    G2 --> G3[Order by Job Title]
+    G3 --> G4[Return DataFrame]
+    end
 ```
 
 ## CRC Files Explanation in the output folder
