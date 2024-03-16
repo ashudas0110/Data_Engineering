@@ -40,7 +40,7 @@ spark-submit Data_Sc_Salaries.py
 
 4. Check the output directories for the results.
 
-
+## Solution Overview
 ```mermaid
 flowchart TD
     A(Start) -->|Read Data| B[Data Ingestion]
@@ -56,9 +56,22 @@ flowchart TD
     I --> J(End)
   
 ```
+## High-Level Architecture
+1. **Data Ingestion** : Read the ds_salaries.csv file using Spark's DataFrame API.
+2. **Data Processing** :
+    - Task 1: Compute the average salary by job title for employees in the US and Canada.
+    - Task 2: Categorize companies based on size and add the Enterprise_size field.
+    - Task 3: Analyze salary trends for job titles with specific conditions.
+3. **Data Storage** : Store the processed data into CSV files for each task, ensuring the data is accessible for further analysis or reporting.
+
+## Detailed Steps
+1. **Initialize Spark Session**: Set up the Spark environment and create a Spark session to manage the application.
+2. **Read Data**: Utilize PySpark to load the dataset into a Spark DataFrame.
+3. **Data Analysis**:
+    - Implement functions to perform the specified analyses and transformations on the data.
+    - Use Spark SQL and DataFrame API for data manipulation.
+3. **Write Results**: Output the results of each analysis to separate CSV files, making sure the data is neatly organized and easy to interpret.
 
 ## Conclusion
 This project showcases the power of Apache Spark in processing and analyzing large datasets efficiently. Through this challenge, we demonstrate how to perform data aggregation, filtering, and transformation operations to extract meaningful insights from salary data.
 
-### For Beginners
-If you're new to Apache Spark or data engineering, this project is a great starting point to understand how big data technologies work in practice. The code is structured and commented to make it as understandable as possible. Feel free to explore the scripts and modify them to get a hands-on experience with Spark.
