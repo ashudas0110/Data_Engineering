@@ -9,9 +9,9 @@ The goal is to provide insights into average salaries, categorize companies by s
 ## Problem Statement
 The dataset, ds_salaries.csv, includes details such as work year, experience level, employment type, job title, salary, and company size. The primary objectives are:
 
-1. **Average Salary Calculation**: Calculate the average salary for each job title for employees residing in the US and Canada, ensuring the output does not contain decimal points.
+1. **Average Salary Analysis**: Calculate the average salary for each job title for employees residing in the US and Canada, ensuring the output does not contain decimal points.
 2. **Enterprise Size Categorization**: Create a new field, Enterprise_size, based on the company size, categorizing companies into Large, Medium, Small, or Others.
-3. **High Salary Job Count**: Identify jobs where the employee's residence matches the company location and the salary is greater than $50,000, then count the occurrences of each job title.
+3. **Salary Trend Analysis**: Identify jobs where the employee's residence matches the company location and the salary is greater than $50,000, then count the occurrences of each job title.
 
 ## Tools and Technologies
 * **Apache Spark**: Used for data processing and analysis. Spark's in-memory computation capabilities make it ideal for handling large datasets efficiently.
@@ -22,9 +22,9 @@ The dataset, ds_salaries.csv, includes details such as work year, experience lev
 The data is read from a CSV file using PySpark's DataFrame API, which allows for efficient handling of structured data.
 
 ### Data Processing and Analysis
-1. **Average Salary Calculation**: The data is filtered for employees in the US and Canada, and the average salary is calculated for each job title using the groupBy and agg functions.
+1. **Average Salary Analysis**: The data is filtered for employees in the US and Canada, and the average salary is calculated for each job title using the groupBy and agg functions.
 2. **Enterprise Size Categorization**: A new column, Enterprise_size, is created using conditional expressions to categorize each record based on the company size.
-3. **High Salary Job Count**: The dataset is filtered to find records where the employee's residence matches the company location and the salary is greater than $50,000. The occurrences of each job title are counted using the groupBy and count functions.
+3. **Salary Trend Analysis**: The dataset is filtered to find records where the employee's residence matches the company location and the salary is greater than $50,000. The occurrences of each job title are counted using the groupBy and count functions.
 
 ### Writing Results
 The results of each analysis are written back to CSV files, ensuring that the output is easily accessible and interpretable.
@@ -43,11 +43,18 @@ spark-submit Data_Sc_Salaries.py
 
 ```mermaid
 flowchart TD
-    A[Christmas] -->|Get money| B(Go shopping)
-    B --> C{Let me think}
-    C -->|One| D[Laptop]
-    C -->|Two| E[iPhone]
-    C -->|Three| F[fa:fa-car Car]
+    A(Start) -->|Read Data| B[Data Ingestion]
+    B --> C[Data Processing]
+    C -->|Task 1| D[Average Salary Analysis]
+    C -->|Task 2| E[Enterprise Size Categorization]
+    C -->|Task 3| F[Salary Trend Analysis]
+    D --> |Write Data| G[Data Output - result_1]
+    E --> |Write Data| H[Data Output - result_2]
+    F --> |Write Data| I[Data Output - result_3]
+    G --> J(End)
+    H --> J(End)
+    I --> J(End)
+  
 ```
 
 ## Conclusion
