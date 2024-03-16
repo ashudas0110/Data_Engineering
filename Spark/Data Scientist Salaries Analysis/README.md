@@ -112,7 +112,7 @@ flowchart TD
   ```
     
 * ***result_1 Function***
-  -Filters the input DataFrame for records where the employee resides in the US or Canada, then calculates the average salary by job title, rounds it to the         nearest whole number, and sorts by job title.
+  - Filters the input DataFrame for records where the employee resides in the US or Canada, then calculates the average salary by job title, rounds it to the         nearest whole number, and sorts by job title.
 
   ```python
   def result_1(input_df):
@@ -134,7 +134,7 @@ flowchart TD
   ```
   
 * ***result_2 Function***
-  -Adds a new column, Enterprise_size, based on the company size with a CASE statement. It showcases how to perform conditional logic in Spark SQL.
+  - Adds a new column, Enterprise_size, based on the company size with a CASE statement. It showcases how to perform conditional logic in Spark SQL.
   
   ```python
   def result_2(input_df):
@@ -167,7 +167,7 @@ flowchart TD
   ```
   
 * ***result_3 Function***
-  -Filters the DataFrame for records where the employee's residence matches the company location and the salary is greater than 50,000. Then, it counts the         occurrences of each job title, showcasing filtering and aggregation.
+  - Filters the DataFrame for records where the employee's residence matches the company location and the salary is greater than 50,000. Then, it counts the         occurrences of each job title, showcasing filtering and aggregation.
 
   ```python
   def result_3(input_df):
@@ -190,7 +190,7 @@ flowchart TD
   ```
   
 * ***main Function***
-  -Orchestrates the execution flow: cleaning up the output directory, creating a Spark session, reading the input data, processing it through various functions,     and finally writing the output to CSV files.
+  - Orchestrates the execution flow: cleaning up the output directory, creating a Spark session, reading the input data, processing it through various functions,     and finally writing the output to CSV files.
 
   ```python
   def main():
@@ -238,7 +238,7 @@ flowchart TD
   ```
   
 * ***outputfile_cleanup Function***
-  -Ensures a clean working directory by removing the existing output directory and creating a new one. This is crucial for rerunning the script without manual         cleanup.
+  - Ensures a clean working directory by removing the existing output directory and creating a new one. This is crucial for rerunning the script without manual         cleanup.
 
   ```python
   def outputfile_cleanup():
