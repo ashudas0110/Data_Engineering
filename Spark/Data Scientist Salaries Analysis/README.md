@@ -85,7 +85,7 @@ flowchart TD
 
 ### Code Explanation
 * ***read_data Function***
-    Initializes reading of a CSV file into a DataFrame with headers and inferred schema. This is the first step in data processing, allowing further manipulation     and analysis.
+    - Initializes reading of a CSV file into a DataFrame with headers and inferred schema. This is the first step in data processing, allowing further manipulation and analysis.
 * ***load_data Function***
     Checks if the DataFrame is not empty and writes it to a specified path as a CSV file. It uses coalesce(1) to ensure the output is a single CSV file, which is     useful for small datasets or when a consolidated file is required.
 * ***result_1 Function***
