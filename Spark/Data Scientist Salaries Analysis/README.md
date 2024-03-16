@@ -86,18 +86,41 @@ flowchart TD
 ### Code Explanation
 * ***read_data Function***
     - Initializes reading of a CSV file into a DataFrame with headers and inferred schema. This is the first step in data processing, allowing further manipulation and analysis.
+
+      ```python
+      def read_data (spark,input_file):
+        '''
+        spark_session : spark
+        for input_file : input_file
+        '''
+       # 1. Read the input file.
+        df = spark.read.csv(input_file, header=True, inferSchema=True)
+        return df
+      ```
 * ***load_data Function***
-    Checks if the DataFrame is not empty and writes it to a specified path as a CSV file. It uses coalesce(1) to ensure the output is a single CSV file, which is     useful for small datasets or when a consolidated file is required.
+   - Checks if the DataFrame is not empty and writes it to a specified path as a CSV file. It uses coalesce(1) to ensure the output is a single CSV file, which is     useful for small datasets or when a consolidated file is required.
+
+    ```python
+    def load_data(data,outputpath):
+        # 1. Write a code to store the outputs to the respective locations.      
+        # Note: Output files should be a single partition CSV file with header.  
+         if (data.count() != 0):
+            print("Loading the data",outputpath)
+            data.coalesce(1).write.csv(outputpath, mode="overwrite", header=True)
+         else:
+            print("Empty dataframe, hence cannot save the data",outputpath)
+    ```
+    
 * ***result_1 Function***
-    Filters the input DataFrame for records where the employee resides in the US or Canada, then calculates the average salary by job title, rounds it to the         nearest whole number, and sorts by job title.
+  -Filters the input DataFrame for records where the employee resides in the US or Canada, then calculates the average salary by job title, rounds it to the         nearest whole number, and sorts by job title.
 * ***result_2 Function***
-    Adds a new column, Enterprise_size, based on the company size with a CASE statement. It showcases how to perform conditional logic in Spark SQL.
+  -Adds a new column, Enterprise_size, based on the company size with a CASE statement. It showcases how to perform conditional logic in Spark SQL.
 * ***result_3 Function***
-    Filters the DataFrame for records where the employee's residence matches the company location and the salary is greater than 50,000. Then, it counts the         occurrences of each job title, showcasing filtering and aggregation.
+  -Filters the DataFrame for records where the employee's residence matches the company location and the salary is greater than 50,000. Then, it counts the         occurrences of each job title, showcasing filtering and aggregation.
 * ***main Function***
-    Orchestrates the execution flow: cleaning up the output directory, creating a Spark session, reading the input data, processing it through various functions,     and finally writing the output to CSV files.
+  -Orchestrates the execution flow: cleaning up the output directory, creating a Spark session, reading the input data, processing it through various functions,     and finally writing the output to CSV files.
 * ***outputfile_cleanup Function***
-    Ensures a clean working directory by removing the existing output directory and creating a new one. This is crucial for rerunning the script without manual         cleanup.
+  -Ensures a clean working directory by removing the existing output directory and creating a new one. This is crucial for rerunning the script without manual         cleanup.
 
 ## CRC Files Explanation in the output folder
 When Spark writes data to a file system, it also creates CRC (Cyclic Redundancy Check) files alongside the actual data files. These CRC files, such as ._SUCCESS.crc and .part-00000-...csv.crc, are checksum files used to detect errors in the written data files. They help in ensuring data integrity by allowing Spark (or the underlying file system) to verify that the data has not been corrupted during the write process.
