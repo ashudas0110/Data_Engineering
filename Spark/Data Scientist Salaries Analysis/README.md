@@ -1,4 +1,4 @@
-Spark Data Engineering Challenge: Data Scientist Salaries Analysis
+##Data Scientist Salaries Analysis
 Overview
 This repository contains the solution to a data engineering challenge focused on analyzing data scientist salaries using Apache Spark. The challenge involves reading, processing, and analyzing salary data to extract meaningful insights through various data transformations and aggregations.
 
