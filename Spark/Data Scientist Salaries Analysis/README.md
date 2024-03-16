@@ -102,8 +102,8 @@ flowchart TD
 ## CRC Files Explanation in the output folder
 When Spark writes data to a file system, it also creates CRC (Cyclic Redundancy Check) files alongside the actual data files. These CRC files, such as ._SUCCESS.crc and .part-00000-...csv.crc, are checksum files used to detect errors in the written data files. They help in ensuring data integrity by allowing Spark (or the underlying file system) to verify that the data has not been corrupted during the write process.
 
-***._SUCCESS.crc***: A checksum file for the _SUCCESS file, which Spark creates in the output directory to indicate that the data was written successfully.
-***.part-00000-...csv.crc***: Corresponds to the checksum of the actual data part file written by Spark. Each part file will have its associated CRC file.
+* ***._SUCCESS.crc***: A checksum file for the _SUCCESS file, which Spark creates in the output directory to indicate that the data was written successfully.
+* ***.part-00000-...csv.crc***: Corresponds to the checksum of the actual data part file written by Spark. Each part file will have its associated CRC file.
 These files are not needed for data analysis but are crucial for maintaining data integrity, especially in distributed computing environments where data is written and read across multiple nodes.
 
 ## Conclusion
