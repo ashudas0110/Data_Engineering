@@ -259,10 +259,11 @@ flowchart TD
         os.mkdir(path)
   ```
 
+## Drilled down flowchart 
 
 ```mermaid
 graph TD
-    A(Start) --> B[Read Data]
+    A([Start]) --> B[Read Data]
     B --> C{Data Empty?}
     C -->|Yes| D[End]
     C -->|No| E[Task 1: Average Salary Analysis]
@@ -271,7 +272,7 @@ graph TD
     G --> H{Data Processed Correctly?}
     H -->|No| I[Log Error and End]
     H -->|Yes| J[Write Data to CSV]
-    J --> K[End]
+    J --> K([End])
 
     subgraph Task 1: Average Salary Analysis
     E --> E1[Filter by Employee Residence US, CA]
