@@ -42,11 +42,12 @@ spark-submit Data_Sc_Salaries.py
 
 
 ```mermaid
-graph TD;
-    Start-->Data Ingestion (Read Data);
-    Data Ingestion (Read Data)-->Data Processing (Average Salary Analysis, Company Size Categorization, Salary Trend Analysis;
-    Data Processing (Average Salary Analysis, Company Size Categorization, Salary Trend Analysis-->Data Output (Write Data);
-    Data Output (Write Data)-->End;
+flowchart TD
+    A[Christmas] -->|Get money| B(Go shopping)
+    B --> C{Let me think}
+    C -->|One| D[Laptop]
+    C -->|Two| E[iPhone]
+    C -->|Three| F[fa:fa-car Car]
 ```
 
 ## Conclusion
