@@ -85,42 +85,179 @@ flowchart TD
 
 ### Code Explanation
 * ***read_data Function***
-    - Initializes reading of a CSV file into a DataFrame with headers and inferred schema. This is the first step in data processing, allowing further manipulation and analysis.
+  - Initializes reading of a CSV file into a DataFrame with headers and inferred schema. This is the first step in data processing, allowing further manipulation and analysis.
 
-      ```python
-      def read_data (spark,input_file):
-        '''
-        spark_session : spark
-        for input_file : input_file
-        '''
-       # 1. Read the input file.
-        df = spark.read.csv(input_file, header=True, inferSchema=True)
-        return df
-      ```
+```python
+def read_data (spark,input_file):
+    '''
+    spark_session : spark
+    for input_file : input_file
+    '''
+    # Reading the input file.
+    df = spark.read.csv(input_file, header=True, inferSchema=True)
+    return df
+```
 * ***load_data Function***
    - Checks if the DataFrame is not empty and writes it to a specified path as a CSV file. It uses coalesce(1) to ensure the output is a single CSV file, which is     useful for small datasets or when a consolidated file is required.
 
-    ```python
-    def load_data(data,outputpath):
-        # 1. Write a code to store the outputs to the respective locations.      
-        # Note: Output files should be a single partition CSV file with header.  
-         if (data.count() != 0):
-            print("Loading the data",outputpath)
-            data.coalesce(1).write.csv(outputpath, mode="overwrite", header=True)
-         else:
-            print("Empty dataframe, hence cannot save the data",outputpath)
-    ```
+```python
+def load_data(data,outputpath):
+    # Code to store the outputs to the respective locations      
+    # The Output files are in a single partition CSV file with header.  
+    if (data.count() != 0):
+        print("Loading the data",outputpath)
+        data.coalesce(1).write.csv(outputpath, mode="overwrite", header=True)
+    else:
+        print("Empty dataframe, hence cannot save the data",outputpath)
+```
     
 * ***result_1 Function***
   -Filters the input DataFrame for records where the employee resides in the US or Canada, then calculates the average salary by job title, rounds it to the         nearest whole number, and sorts by job title.
+
+  ```python
+  def result_1(input_df):
+    '''
+    for input file: input_df
+    '''
+    print("-------------------")
+    print("Starting result_1")
+    print("-------------------")                                        
+    #  From the input_df, a new field avg_salary is created and the average salaries 
+    #  given to each job for the employee residence having US and CA are calculated.                              
+    # columns fetched are job_title and avg_salary
+  
+    df = input_df.filter(input_df.employee_residence.isin(['US', 'CA'])) \
+                 .groupBy('job_title') \
+                 .agg(round(avg('salary_in_usd')).alias('avg_salary')) \
+                 .orderBy('job_title')
+    return df
+  ```
+  
 * ***result_2 Function***
   -Adds a new column, Enterprise_size, based on the company size with a CASE statement. It showcases how to perform conditional logic in Spark SQL.
+  
+  ```python
+  def result_2(input_df):
+    '''
+    input file for this function: input_df 
+    '''
+    print("-------------------------")
+    print("Starting result_2")
+    print("-------------------------")
+    # The following are the parameters : -                                                                                       
+    #      ◦ input_file : input_df                                                                                                                                     #  1) Using input_df, a new field named Enterprise_size is created.                        
+    #    i) If the company size is L,                                                    
+    #       the flag under Enterprise_size column is "Large_enterprise"        
+    #    ii) If the company size is M,                                                   
+    #       the flag under Enterprise_size column is "Medium_enterprise"       
+    #   iii) If the company size is S,                                                   
+    #       the flag under Enterprise_size column is "Small_enterprise"        
+    #    iv) If all the above conditions are not true, flag is "others"           
+    # 2) Columns fetched are: experience_level,employment_type,job_title,salary,      
+    #                            company_location,company_size                                                                                                      
+    mapping_expr = expr(
+        """CASE WHEN company_size = 'L' THEN 'Large_enterprise'
+                WHEN company_size = 'M' THEN 'Medium_enterprise'
+                WHEN company_size = 'S' THEN 'Small_enterprise'
+                ELSE 'others' END AS Enterprise_size""")
+    df = input_df.withColumn("Enterprise_size", mapping_expr) \
+                 .select('experience_level', 'employment_type', 'job_title', 'salary', 'company_location', 'company_size', 'Enterprise_size')
+    return df  
+  ```
+  
 * ***result_3 Function***
   -Filters the DataFrame for records where the employee's residence matches the company location and the salary is greater than 50,000. Then, it counts the         occurrences of each job title, showcasing filtering and aggregation.
+
+  ```python
+  def result_3(input_df):
+    '''
+    input file for this function: input_df 
+    '''
+    print("-------------------------")
+    print("Starting result_3")
+    print("-------------------------")                               
+    # 1) Using input df, fetched the records where employee residence is matching with    
+    #    the company location with the condition where salary is greater than 50000.     
+    # 2) The count for each job_title is calculated                                           
+    # 3) Columns fetched are: job_title,count                                                                                                           
+
+    df = input_df.filter((input_df.employee_residence == input_df.company_location) & (input_df.salary_in_usd > 50000)) \
+                 .groupBy('job_title') \
+                 .count() \
+                 .orderBy('job_title')
+    return df 
+  ```
+  
 * ***main Function***
   -Orchestrates the execution flow: cleaning up the output directory, creating a Spark session, reading the input data, processing it through various functions,     and finally writing the output to CSV files.
+
+  ```python
+  def main():
+    """ Main driver program to control the flow of execution.
+        Please DO NOT change anything here.
+    """
+    #Clean the output files for fresh execution
+    outputfile_cleanup()
+  
+    #Get a new spark session
+    spark = (SparkSession.builder
+                         .appName("Data Scientist Salaries")
+                         .master("local")
+                         .getOrCreate())
+    spark.sparkContext.setLogLevel("ERROR")
+
+    
+    cwd = os.getcwd()
+    dirname = os.path.dirname(cwd)
+    input_file = "file://"+ dirname + "/inputfile/ds_salaries.csv"
+    output_path = "file://"+ dirname + "/output/"
+    result_1_path = output_path + "result_1"
+    result_2_path = output_path + "result_2"
+    result_3_path = output_path + "result_3"
+
+    task_1 = read_data(spark,input_file)
+    task_2 = result_1(task_1)
+    task_3 = result_2(task_1)
+    task_4 = result_3(task_1)
+
+       
+    try:
+        load_data(task_2,result_1_path)
+    except Exception as e:
+        print("Getting error while loading result_1",e)
+    try:
+        load_data(task_3,result_2_path)
+    except Exception as e:
+        print("Getting error while loading result_2",e)
+    try:
+        load_data(task_4,result_3_path)
+    except Exception as e:
+        print("Getting error while loading result_3",e)
+    spark.stop()   
+  ```
+  
 * ***outputfile_cleanup Function***
   -Ensures a clean working directory by removing the existing output directory and creating a new one. This is crucial for rerunning the script without manual         cleanup.
+
+  ```python
+  def outputfile_cleanup():
+    """ Clean up the output files for a fresh execution.
+        This is executed every time a job is run. 
+    """
+    cwd = os.getcwd()
+    dirname = os.path.dirname(cwd)
+    path = dirname + "/output/"
+    if (os.path.isdir(path)):
+        try:
+            shutil.rmtree(path)  
+            print("% s removed successfully" % path)
+            os.mkdir(path)  
+        except OSError as error:  
+            print(error)  
+    else:
+        print("The directory does not exist. Creating..% s", path)
+        os.mkdir(path)
+  ```
 
 ## CRC Files Explanation in the output folder
 When Spark writes data to a file system, it also creates CRC (Cyclic Redundancy Check) files alongside the actual data files. These CRC files, such as ._SUCCESS.crc and .part-00000-...csv.crc, are checksum files used to detect errors in the written data files. They help in ensuring data integrity by allowing Spark (or the underlying file system) to verify that the data has not been corrupted during the write process.
