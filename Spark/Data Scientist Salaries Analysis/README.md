@@ -34,7 +34,7 @@ The results of each analysis are written back to CSV files, ensuring that the ou
 3. Run the Spark job using the command:
 
 ```shell
-spark-submit <script_name>.py
+spark-submit Data_Sc_Salaries.py
 ```
 
 4. Check the output directories for the results.
