@@ -72,6 +72,40 @@ flowchart TD
     - Use Spark SQL and DataFrame API for data manipulation.
 3. **Write Results**: Output the results of each analysis to separate CSV files, making sure the data is neatly organized and easy to interpret.
 
+## Data_Sc_Salaries.py explanation: 
+
+### Libraries Explanation
+* ***os***: This module provides a way to use operating system-dependent functionality like reading or writing to a filesystem. It's used here for path manipulations (e.g., os.getcwd(), os.path.isdir()).
+* ***shutil***: Offers high-level operations on files and collections of files. In this context, it's used for removing the output directory (shutil.rmtree()) if it already exists to ensure a fresh start.
+* ***pyspark***: The root package for Apache Spark's Python API, PySpark, which provides Spark's core functionality.
+* ***from pyspark.sql import SparkSession***: SparkSession is the entry point to programming Spark with the Dataset and DataFrame API. It's used to create a Spark session.
+* _from pyspark.sql.functions import *_ : Imports all SQL functions like round(), avg(), which are used for data manipulation.
+* ***import pyspark.sql.functions as F***: This import statement is similar to the above but allows accessing the functions with the prefix F (e.g., F.avg()). It's not explicitly used in the provided code but is useful for namespacing and avoiding naming conflicts.
+* ***from pyspark.sql.types import StructType, StructField, StringType, IntegerType, FloatType, DateType***: These imports are for defining schemas for DataFrames. Although the schema definition is not directly used in the provided snippets, they're essential when you need to explicitly specify the structure of your data.
+
+### Code Explanation
+* ***read_data Function***
+    Initializes reading of a CSV file into a DataFrame with headers and inferred schema. This is the first step in data processing, allowing further manipulation     and analysis.
+* ***load_data Function***
+    Checks if the DataFrame is not empty and writes it to a specified path as a CSV file. It uses coalesce(1) to ensure the output is a single CSV file, which is     useful for small datasets or when a consolidated file is required.
+* ***result_1 Function***
+    Filters the input DataFrame for records where the employee resides in the US or Canada, then calculates the average salary by job title, rounds it to the         nearest whole number, and sorts by job title.
+* ***result_2 Function***
+    Adds a new column, Enterprise_size, based on the company size with a CASE statement. It showcases how to perform conditional logic in Spark SQL.
+* ***result_3 Function***
+    Filters the DataFrame for records where the employee's residence matches the company location and the salary is greater than 50,000. Then, it counts the         occurrences of each job title, showcasing filtering and aggregation.
+* ***main Function***
+    Orchestrates the execution flow: cleaning up the output directory, creating a Spark session, reading the input data, processing it through various functions,     and finally writing the output to CSV files.
+* ***outputfile_cleanup Function***
+    Ensures a clean working directory by removing the existing output directory and creating a new one. This is crucial for rerunning the script without manual         cleanup.
+
+## CRC Files Explanation in the output folder
+When Spark writes data to a file system, it also creates CRC (Cyclic Redundancy Check) files alongside the actual data files. These CRC files, such as ._SUCCESS.crc and .part-00000-...csv.crc, are checksum files used to detect errors in the written data files. They help in ensuring data integrity by allowing Spark (or the underlying file system) to verify that the data has not been corrupted during the write process.
+
+***._SUCCESS.crc***: A checksum file for the _SUCCESS file, which Spark creates in the output directory to indicate that the data was written successfully.
+***.part-00000-...csv.crc***: Corresponds to the checksum of the actual data part file written by Spark. Each part file will have its associated CRC file.
+These files are not needed for data analysis but are crucial for maintaining data integrity, especially in distributed computing environments where data is written and read across multiple nodes.
+
 ## Conclusion
 This project showcases the power of Apache Spark in processing and analyzing large datasets efficiently. Through this challenge, we demonstrate how to perform data aggregation, filtering, and transformation operations to extract meaningful insights from salary data.
 
