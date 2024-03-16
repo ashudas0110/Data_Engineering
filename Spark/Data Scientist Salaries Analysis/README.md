@@ -2,19 +2,20 @@
 
 ## Overview
 
-This repository contains the solution to a data engineering project focused on analyzing data scientist salaries using Apache Spark. The challenge involves reading, processing, and analyzing salary data to extract meaningful insights through various data transformations and aggregations.
+This project aims to analyze data scientist salaries using Apache Spark, a powerful open-source unified analytics engine for large-scale data processing and machine learning. We delve into a dataset containing salary information of data scientists based on various parameters like experience level, employment type, job title, and geographical location.
+
+The goal is to provide insights into average salaries, categorize companies by size, and identify salary trends based on job titles and locations.
 
 ## Problem Statement
-The challenge is based on a dataset containing salary information for data scientists across different countries, experience levels, and company sizes. The primary objectives are:
+The dataset, ds_salaries.csv, includes details such as work year, experience level, employment type, job title, salary, and company size. The primary objectives are:
 
 1. **Average Salary Calculation**: Calculate the average salary for each job title for employees residing in the US and Canada, ensuring the output does not contain decimal points.
-2. **Enterprise Size Categorization**: Based on the company size, categorize each record into Large_enterprise, Medium_enterprise, Small_enterprise, or others.
+2. **Enterprise Size Categorization**: Create a new field, Enterprise_size, based on the company size, categorizing companies into Large, Medium, Small, or Others.
 3. **High Salary Job Count**: Identify jobs where the employee's residence matches the company location and the salary is greater than $50,000, then count the occurrences of each job title.
 
 ## Tools and Technologies
-* **Apache Spark**: Used for data processing and analysis.
+* **Apache Spark**: Used for data processing and analysis. Spark's in-memory computation capabilities make it ideal for handling large datasets efficiently.
 * **PySpark**: The Python API for Spark, utilized for writing Spark jobs in Python.
-* **Visual Studio Code (VSCode)**: Recommended as the Integrated Development Environment (IDE) for writing and testing the Spark code.
 
 ## Solution Approach
 ### Reading Data
@@ -38,6 +39,14 @@ spark-submit Data_Sc_Salaries.py
 ```
 
 4. Check the output directories for the results.
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
 
 ## Conclusion
 This project showcases the power of Apache Spark in processing and analyzing large datasets efficiently. Through this challenge, we demonstrate how to perform data aggregation, filtering, and transformation operations to extract meaningful insights from salary data.
