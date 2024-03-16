@@ -43,7 +43,7 @@ spark-submit Data_Sc_Salaries.py
 ## Solution Overview
 ```mermaid
 flowchart TD
-    A(Start) -->|Read Data| B[Data Ingestion]
+    A(Start - Spark Session Initialization) -->|Read Data| B[Data Ingestion]
     B --> C[Data Processing]
     C -->|Task 1| D[Average Salary Analysis]
     C -->|Task 2| E[Enterprise Size Categorization]
