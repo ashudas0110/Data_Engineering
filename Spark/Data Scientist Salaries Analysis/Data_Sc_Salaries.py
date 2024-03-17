@@ -97,7 +97,6 @@ def result_3(input_df):
 
 def main():
     """ Main driver program to control the flow of execution.
-        Please DO NOT change anything here.
     """
     #Clean the output files for fresh execution
     outputfile_cleanup()
